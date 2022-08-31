@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
   <link rel="stylesheet" href="../css/hljs-base16.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
-  
+
   <!--- D3 IMPORT HERE --->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <!--- D3 IMPORT HERE --->
@@ -66,43 +66,86 @@
 
   <!--- Code for today's class --->
   <script id="notes">
-  
+
   // New import! (see <head> of document)
-  
-  
-  
-  
+
+  console.log(d3);
+
+
   // 1. How can we select elements? What is the difference between select() and selectAll()?
+  let div1 = document.getElementById("d1");
+  // console.log(div1);
+  // div1.innerHTML = "testing";
+  // div1.style.color = "red"
 
+  let d3div1 = d3.select("#d1");
+  console.log(d3div1);
+  d3div1.text("isn't d3 amazing?");
+  d3div1.style("color", "pink");
+  console.log(d3div1.style("color"));
+  // many d3 function have geter and setter modes (dependeng on number of arguments)
 
+  d3.select("#d1")
+    .text("isn't d3 amazing?")
+    .style("color", "darkpink")
+    .style("font-weight", "bold");
 
+  let divs = d3.selectAll("div.hellodiv");
+  divs.style("background-color", "lightgrey")
 
-  
-  
   // 2a. How can we create new elements, and set their attributes and styles?
-  
-  
-  
-  
-  // 2b. How do we create lots of elements (but not using data just yet)?
-  // let colors = ["yellow", "blue", "pink", "green"];
-  // 
-  // function randomPixel() {
-  //   return Math.random() * svg.attr("height");    }
-  // 
-  // function randomColor() {
-  //   return colors[Math.floor(Math.random() * colors.length)]
-  // }
+  let svg = d3.select("svg");
 
-  
-  
-  
+  svg.append("circle")
+     .attr("cx", 100)
+     .attr("cy", 100)
+     .attr("r", 10)
+     .style("fill", "red")
+     .on("click", function() {console.log("circles are a shape")});
+
+
+
+  // 2b. How do we create lots of elements (but not using data just yet)?
+  let colors = ["yellow", "blue", "purple", "green"];
+
+  function randomPixel() {
+    return Math.random() * svg.attr("height");    }
+
+  function randomColor() {
+    return colors[Math.floor(Math.random() * colors.length)]
+  }
+
+  for (let i=0; i < 100; i++) {
+    let x = randomPixel();
+    let y = randomPixel();
+
+    svg.append("circle")
+       .attr("cx", x)
+       .attr("cy", y)
+       .attr("r", 4)
+       .style("fill", "orange");
+  }
+
+  colors.forEach( (d, i) => {
+    console.log(d, i);
+    let rad = 4 + Math.random() * 15;
+
+
+        svg.append("circle")
+           .attr("cx", randomPixel())
+           .attr("cy", randomPixel())
+           .attr("r", rad)
+           .style("fill", d);
+  })
+
+
+
   // 3. How do we update the attributes of existing elements?
-  
-  
-  
-  
-  
+  svg.selectAll("circle")
+     .transition()
+     .delay(1000)
+     .duration(5000)
+     .style("fill", "red");
 
   </script>
 
@@ -110,7 +153,7 @@
 
   <!--- calls the highlight library to fill the <pre> tag with code --->
   <script>
-  
+
   function sanitize(s) {
     return s.replace("<br>", "\\n")
             .replace(/&/g, "&amp;")
